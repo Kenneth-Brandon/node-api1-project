@@ -1,21 +1,37 @@
 const express = require('express');
-const shortid = require('shortid');
+const shortId = require('shortId');
+const cors = require('cors');
+
 const server = express();
 
 server.use(express.json());
+server.use(cors());
 
 const PORT = 5000;
 
-let hubs = [];
-let lessons = [];
-
+let users = [
+  {
+    id: shortId.generate(),
+    name: 'Jane Doe',
+    bio: "Not Tarzan's Wife, author Jane",
+  },
+];
+//---------------------------------------------//
+// Testing Postman with Get response of 200 and
+// web browers is getting message when viewed
+// with json extension
+//---------------------------------------------//
 server.get('/', (request, response) => {
-  response.json({ message: 'hello' });
+  response.json({ message: 'api running' });
 });
 
-//-----------------------------------------------------//
+server.get('/api/users', (request, response) => {
+  response.json(200).json(users);
+});
+
+//---------------------------------------------//
 // Create
-//-----------------------------------------------------//
+//---------------------------------------------//
 server.post('/api/hubs', (request, response) => {
   const hubInfo = request.body;
   hubInfo.id = shortid.generate();
@@ -23,16 +39,16 @@ server.post('/api/hubs', (request, response) => {
   response.status(201).json(hubInfo);
 });
 
-//-----------------------------------------------------//
+//---------------------------------------------//
 // Read
-//-----------------------------------------------------//
+//---------------------------------------------//
 server.get('/api/hubs', (request, response) => {
   response.status(200).json(hubs);
 });
 
-//-----------------------------------------------------//
+//---------------------------------------------//
 // Update - Patch
-//-----------------------------------------------------//
+//---------------------------------------------//
 server.patch('/api/hubs/:id', (request, response) => {
   const { id } = request.params;
   const changes = request.body;
@@ -47,9 +63,9 @@ server.patch('/api/hubs/:id', (request, response) => {
   }
 });
 
-//-----------------------------------------------------//
+//---------------------------------------------//
 // Update - Patch
-//-----------------------------------------------------//
+//---------------------------------------------//
 server.put('/api/hubs/:id', (request, response) => {
   const { id } = request.params;
   const changes = request.body;
@@ -65,9 +81,9 @@ server.put('/api/hubs/:id', (request, response) => {
   }
 });
 
-//-----------------------------------------------------//
+//---------------------------------------------//
 // Delete
-//-----------------------------------------------------//
+//---------------------------------------------//
 server.delete('/api/hubs/:id', (request, response) => {
   const { id } = request.params;
 
@@ -81,7 +97,7 @@ server.delete('/api/hubs/:id', (request, response) => {
   }
 });
 
-//-----------------------------------------------------//
+//---------------------------------------------//
 
 server.listen(PORT, () => {
   console.log(`listening on http://localhost:${PORT}`);
