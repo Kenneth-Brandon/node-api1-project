@@ -32,11 +32,22 @@ server.get('/api/users', (request, response) => {
 //---------------------------------------------//
 // Create
 //---------------------------------------------//
-server.post('/api/hubs', (request, response) => {
-  const hubInfo = request.body;
-  hubInfo.id = shortid.generate();
-  hubs.push(hubInfo);
-  response.status(201).json(hubInfo);
+server.post('/api/users', (request, response) => {
+  const post = request.body;
+  post.id = shortId.generate();
+
+  if (!post.name && !post.bio) {
+    response.status(400).json({
+      errorMessage: 'Please provide name and bio for the user.',
+    });
+  } else if (post.name && post.bio) {
+    users.push(post);
+    response.status(201).json(users);
+  } else {
+    response.status(500).json({
+      errorMessage: 'There was an error while saving the user to the database',
+    });
+  }
 });
 
 //---------------------------------------------//
