@@ -59,9 +59,13 @@ server.get('/api/users/:id', (request, response) => {
 
   if (user) {
     response.status(200).json(user);
-  } else {
+  } else if (!user) {
     response.status(404).json({
       errorMessage: 'The user with the specified ID does not exist.',
+    });
+  } else {
+    response.status(500).json({
+      errorMessage: 'The users information could not be retrieved.',
     });
   }
 });
@@ -104,16 +108,20 @@ server.put('/api/hubs/:id', (request, response) => {
 //---------------------------------------------//
 // Delete
 //---------------------------------------------//
-server.delete('/api/hubs/:id', (request, response) => {
-  const { id } = request.params;
+server.delete('/api/users/:id', (request, response) => {
+  const { id } = request.params.id;
 
-  const found = hubs.find((hub) => hub.id === id);
-
-  if (found) {
-    hubs = hubs.filter((hub) => hub.id !== id);
-    response.status(200).json(found);
+  if (users[id - 1]) {
+    users = users.filter((user) => user.id !== id);
+    response.status(200).json(users);
+  } else if (!users[id - 1]) {
+    response.status(404).json({
+      errorMessage: 'The user with the specified ID does not exist',
+    });
   } else {
-    response.status(404).json({ message: 'hub not found' });
+    response.status(500).json({
+      errorMessage: 'The user could not be removed.',
+    });
   }
 });
 
