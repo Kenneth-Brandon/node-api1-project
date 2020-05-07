@@ -53,8 +53,17 @@ server.post('/api/users', (request, response) => {
 //---------------------------------------------//
 // Read
 //---------------------------------------------//
-server.get('/api/hubs', (request, response) => {
-  response.status(200).json(hubs);
+server.get('/api/users/:id', (request, response) => {
+  const id = request.params.id;
+  const user = users.find((user) => user.id === id);
+
+  if (user) {
+    response.status(200).json(user);
+  } else {
+    response.status(404).json({
+      errorMessage: 'The user with the specified ID does not exist.',
+    });
+  }
 });
 
 //---------------------------------------------//
