@@ -11,10 +11,16 @@ server.use(cors());
 
 let users = [];
 
+//---------------------------------------------//
+// Testing Postman
+//---------------------------------------------//
 server.get('/', (request, response) => {
   response.json({ message: 'hello world' });
 });
 
+//---------------------------------------------//
+// Create
+//---------------------------------------------//
 server.post('/api/users', (request, response) => {
   const userInfo = request.body;
 
@@ -33,6 +39,9 @@ server.post('/api/users', (request, response) => {
   }
 });
 
+//---------------------------------------------//
+// Read
+//---------------------------------------------//
 server.get('/api/users', (request, response) => {
   if (users.length > 0) {
     response.status(200).json(users);
@@ -43,13 +52,16 @@ server.get('/api/users', (request, response) => {
   }
 });
 
+//---------------------------------------------//
+// Read specific user Id:
+//---------------------------------------------//
 server.get('/api/users/:id', (request, response) => {
   const { id } = request.params;
 
   const found = users.find((user) => user.id === id);
 
   if (found) {
-    specificuser = users.filter((user) => user.id === id);
+    specificUser = users.filter((user) => user.id === id);
     response.status(200).json(found);
   } else if (!found) {
     response.status(404).json({
@@ -62,26 +74,9 @@ server.get('/api/users/:id', (request, response) => {
   }
 });
 
-server.delete('/api/users/:id', (request, response) => {
-  const { id } = request.params;
-
-  const found = users.find((user) => user.id === id);
-
-  if (found) {
-    users = users.filter((user) => user.id !== id);
-
-    response.status(200).json(found);
-  } else if (!found) {
-    response.status(404).json({
-      message: 'The user with the specified ID does not exist.', // 404 = not found
-    });
-  } else {
-    response
-      .status(500)
-      .json({ errorMessage: 'The user could not be removed' }); // 500 = server error
-  }
-});
-
+//---------------------------------------------//
+// Update - Put
+//---------------------------------------------//
 server.put('/api/users/:id', (request, response) => {
   const { id } = request.params;
   const changes = request.body;
@@ -109,6 +104,9 @@ server.put('/api/users/:id', (request, response) => {
   }
 });
 
+//---------------------------------------------//
+// Update - Patch
+//---------------------------------------------//
 server.patch('/api/users/:id', (request, response) => {
   const { id } = request.params;
   const changes = request.body;
@@ -135,6 +133,32 @@ server.patch('/api/users/:id', (request, response) => {
   }
 });
 
+//---------------------------------------------//
+// Delete
+//---------------------------------------------//
+server.delete('/api/users/:id', (request, response) => {
+  const { id } = request.params;
+
+  const found = users.find((user) => user.id === id);
+
+  if (found) {
+    users = users.filter((user) => user.id !== id);
+
+    response.status(200).json(found);
+  } else if (!found) {
+    response.status(404).json({
+      message: 'The user with the specified ID does not exist.', // 404 = not found
+    });
+  } else {
+    response
+      .status(500)
+      .json({ errorMessage: 'The user could not be removed' }); // 500 = server error
+  }
+});
+
+//---------------------------------------------//
+// Listening to Port
+//---------------------------------------------//
 const PORT = 5000;
 
 server.listen(PORT, () => {
