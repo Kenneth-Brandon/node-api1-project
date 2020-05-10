@@ -19,6 +19,7 @@ const NewUserForm = () => {
     axios
       .post('http://localhost:5000/api/users', user)
       .then((response) => {
+        console.log(response);
         window.location.reload(false);
       })
       .catch((error) => console.log({ error }));
@@ -50,4 +51,4 @@ const NewUserForm = () => {
   );
 };
 
-export default NewUserFrom;
+export default NewUserForm;

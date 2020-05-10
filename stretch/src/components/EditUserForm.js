@@ -12,7 +12,7 @@ const EditUserForm = () => {
     if (event.target.name === 'id') {
       setUser({
         ...user,
-        [event.target.name]: parseInt(event.target.value),
+        [event.target.name]: event.target.value,
       });
     } else {
       setUser({
@@ -27,7 +27,7 @@ const EditUserForm = () => {
     if (user.id) {
       if (user.name && user.bio) {
         axios
-          .put(`http://localhost:8000/api/users/${user.id}`, user)
+          .put(`http://localhost:5000/api/users/${user.id}`, user)
           .then((response) => {
             console.log(response);
             window.location.reload(false);
@@ -35,7 +35,7 @@ const EditUserForm = () => {
           .catch((error) => console.log({ error }));
       } else {
         axios
-          .patch(`http://localhost:8000/api/users/${user.id}`, user)
+          .patch(`http://localhost:5000/api/users/${user.id}`, user)
           .then((response) => {
             console.log(response);
             window.location.reload(false);
@@ -52,7 +52,7 @@ const EditUserForm = () => {
       <h3>Edit an Existing User</h3>
       <form onSubmit={handleSubmit}>
         <input
-          type="number"
+          type="text"
           name="id"
           placeholder="User ID"
           value={user.id}
